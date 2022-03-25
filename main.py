@@ -3,7 +3,7 @@
 import json
 import sys
 from src.scrapper import avis_scrapper
-from src.avis import avis
+from src.smtp import smtp
 from src.logger import logger
 
 def main():
@@ -12,8 +12,14 @@ def main():
     try:
         with open('config.json', 'r') as data:
             config = json.load(data)
+        log.info('Configuration loaded')
         scrapper = avis_scrapper('https://secure.avis.es/resultados-búsqueda')
-        print(scrapper.get_cheapest_deal(config['params']))
+        deal = scrapper.get_cheapest_deal(config['params'])
+        log.info('Deal found: ' + deal)
+        mail = smtp('smtp.gmail.com:587', config['mailfrom'], config['mailpassword'])
+        mail.setSubject('Cheapest deal: ' + deal + '€')
+        mail.setBody(str(config['params']))
+        mail.send(config['mailto'])
     except Exception as e:
         log.error(str(e))
         log.stop()
