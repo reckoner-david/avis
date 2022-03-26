@@ -15,9 +15,9 @@ def main():
         log.info('Configuration loaded')
         scrapper = avis_scrapper('https://secure.avis.es/resultados-búsqueda')
         deal = scrapper.get_cheapest_deal(config['params'])
-        log.info('Deal found: ' + deal)
+        if deal < config['threshold']: log.info('Deal found: {}€'.format(deal))
+        else: log.info('Too expensive ({}€)'.format(deal))
         mail = smtp('smtp.gmail.com:587', config['mailfrom'], config['mailpassword'])
-        mail.setSubject('Cheapest deal: ' + deal + '€')
         mail.setBody(str(config['params']))
         mail.send(config['mailto'])
     except Exception as e:
