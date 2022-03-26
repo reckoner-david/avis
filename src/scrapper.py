@@ -17,4 +17,4 @@ class avis_scrapper:
                 line = line.strip()
                 line = line[line.find('['):-1]
                 prices = eval(line)
-                return prices[0]
+                return float(prices[0])
