@@ -32,13 +32,14 @@ def main():
             mail.setSubject(dealFoundStr)
             mail.setBody(str(config['params']))
             mail.send(config['mailto'])
-        else: 
-            log.info('Too expensive ({}€)'.format(deal))
+        else:
+            noDealFoundStr = 'Too expensive ({}€)'.format(deal)
+            log.info(noDealFoundStr)
             if (force):
                 log.info('Mail forced')
                 mail = smtp('smtp.gmail.com:587', config['mailfrom'], config['mailpassword'])
                 mail.setSubject('No deal found')
-                mail.setBody(str(config['params']))
+                mail.setBody(str(config['params']) + '\n' + noDealFoundStr)
                 mail.send(config['mailto'])
     except Exception as e:
         log.error(str(e))
