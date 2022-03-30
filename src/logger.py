@@ -18,7 +18,13 @@ class logger:
 
     def start(self, fileName, stdout):
         self._stdout = stdout
-        self._logHandle = open(fileName, 'a+', 1)
+        self._logHandle = open(fileName, 'a+')
+        self.info("Log start")
+    
+    def restart(self, fileName):
+        if self._logHandle and not self._logHandle.closed:
+            self._logHandle.close()
+        self._logHandle = open(fileName, 'a+')
         self.info("Log start")
     
     def info(self, message):
