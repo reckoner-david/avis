@@ -45,6 +45,6 @@ class smtp:
         self._message.set_payload([])
 
     def send(self, to):
-        self._logger.info('Sending mail to: ' + to)
-        self._message.replace_header('To', to)
+        self._logger.info('Sending mail to: ' + str(to))
+        self._message.replace_header('To', ','.join(to))
         self._server.sendmail(self._loginName, to, self._message.as_string())
